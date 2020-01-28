@@ -3,13 +3,11 @@ const express = require("express");
 const PORT = 3000;
 
 let projects = [];
-let totalRequests = 0;
 
 const server = express();
 server.use(express.json());
 server.use((req, res, next) => {
-  totalRequests++;
-  console.log(`Total de requisições feitas a API: ${totalRequests}`);
+  console.count(`Total de requisições`);
   return next();
 });
 
