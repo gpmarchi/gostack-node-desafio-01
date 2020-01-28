@@ -16,9 +16,9 @@ server.use((req, res, next) => {
 function checkProjectExists(req, res, next) {
   const { id } = req.params;
 
-  const project = projects.filter(project => project.id === id);
+  const project = projects.find(project => project.id === id);
 
-  if (project.length === 0) {
+  if (!project) {
     return res.status(400).json({ message: "Project does not exist" });
   }
 
@@ -43,11 +43,9 @@ server.post("/projects/:id/tasks", checkProjectExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
-  projects.map(project => {
-    if (project.id === id) {
-      project.tasks.push(title);
-    }
-  });
+  const project = projects.find(project => project.id === id);
+
+  project.tasks.push(title);
 
   return res.json(projects);
 });
@@ -56,12 +54,9 @@ server.put("/projects/:id", checkProjectExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
-  projects.map(project => {
-    if (project.id === id) {
-      project.title = title;
-    }
-    return project;
-  });
+  const project = projects.find(project => project.id === id);
+
+  project.title = title;
 
   return res.json(projects);
 });
